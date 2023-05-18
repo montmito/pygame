@@ -12,8 +12,10 @@ pygame.display.set_caption('XD fighter')
 
 #gerando imagem(fd)
 
-image = pygame.image.load('Imagens_pygame/fd_pixel2.png').convert()
-image = pygame.transform.scale(image, (comprimento, altura))
+Fd = pygame.image.load('Imagens_pygame/fd_pixel2.png').convert()
+cr7 = pygame.image.load('Imagens_pygame/cr7_neutro_pixel.png').convert()
+cr7 = pygame.transform.scale(cr7, (50, 50))
+Fd = pygame.transform.scale(Fd, (comprimento, altura))
 
 #começo !!!
 
@@ -28,7 +30,8 @@ while game:
             game = False
             #saída 
 
-    window.blit(image,(0,0))
+    window.blit(Fd,(0,0))
+    window.blit(cr7,(400,300))
     #atualiza
     pygame.display.update() 
 
