@@ -28,8 +28,10 @@ class CR7(pygame.sprite.Sprite):
         self.rect.x = 200
         self.rect.y = 350
         self.speedx = 0
+        self.speedy = 0
     def update(self):
         self.rect.x += self.speedx
+        self.rect.y += self.speedy
         
 class JB(pygame.sprite.Sprite):
     def __init__(self, img):
@@ -40,8 +42,10 @@ class JB(pygame.sprite.Sprite):
         self.rect.x = 500
         self.rect.y = 350
         self.speedx = 0
+        self.speedy = 0
     def update(self):
             self.rect.x += self.speedx
+            self.rect.y += self.speedy
 #começo !!!
 
 game = True
@@ -61,6 +65,10 @@ while game:
                 lutador1.speedx -= 1
             if event.key == pygame.K_RIGHT:
                 lutador1.speedx += 1
+            if event.key == pygame.K_UP:
+                lutador1.speedy -= 1
+            if event.key == pygame.K_w:
+                lutador2.speedy -= 1
             if event.key == pygame.K_a:
                 lutador2.speedx -= 1
             if event.key == pygame.K_d:
@@ -72,6 +80,10 @@ while game:
                 lutador1.speedx += 1
             if event.key == pygame.K_RIGHT:
                 lutador1.speedx -= 1
+            if event.key == pygame.K_w:
+                lutador2.speedy += 1
+            if event.key == pygame.K_UP:
+                lutador1.speedy += 1
             if event.key == pygame.K_a:
                 lutador2.speedx += 1
             if event.key == pygame.K_d:
