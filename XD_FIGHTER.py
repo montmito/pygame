@@ -73,9 +73,9 @@ while game:
             if event.key == pygame.K_RIGHT:
                 lutador1.speedx -= 1
             if event.key == pygame.K_a:
-                lutador2.speedx -= 1
-            if event.key == pygame.K_d:
                 lutador2.speedx += 1
+            if event.key == pygame.K_d:
+                lutador2.speedx -= 1
 
     window.blit(Fd,(0,0))
     #atualiza
