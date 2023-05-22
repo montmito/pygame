@@ -12,9 +12,9 @@ pygame.display.set_caption('XD fighter')
 
 #gerando imagem(fd,cr7,jb)
 
-Fd = pygame.image.load('Imagens_pygame/fd_pixel2.png').convert()
-cr7 = pygame.image.load('Imagens_pygame/cr7_neutro_pixel.png').convert()
-jb = pygame.image.load('Imagens_pygame/jb_n_e.png').convert()
+Fd = pygame.image.load('Imagens pygame/fd_pixel2.png').convert()
+cr7 = pygame.image.load('Imagens pygame/cr7_neutro_pixel.png').convert()
+jb = pygame.image.load('Imagens pygame/jb_n_e.png').convert()
 cr7 = pygame.transform.scale(cr7, (75, 75))
 Fd = pygame.transform.scale(Fd, (comprimento, altura))
 jb = pygame.transform.scale(jb,(75, 75))
