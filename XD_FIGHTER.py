@@ -55,12 +55,27 @@ while game:
         if event.type == pygame.QUIT:
             game = False
             #saída 
-        # if pygame.key.get_pressed()[K_a]:
-        #     x -= 20
-        # if pygame.key.get_pressed()[K_w]:
-        #     y -= 20
-        # if pygame.key.get_pressed()[K_d]:
-        #     x += 20
+        if event.type == pygame.KEYDOWN:
+            # Dependendo da tecla, altera a velocidade.
+            if event.key == pygame.K_LEFT:
+                lutador1.speedx -= 1
+            if event.key == pygame.K_RIGHT:
+                lutador1.speedx += 1
+            if event.key == pygame.K_a:
+                lutador2.speedx -= 1
+            if event.key == pygame.K_d:
+                lutador2.speedx += 1
+        # Verifica se soltou alguma tecla.
+        if event.type == pygame.KEYUP:
+            # Dependendo da tecla, altera a velocidade.
+            if event.key == pygame.K_LEFT:
+                lutador1.speedx += 1
+            if event.key == pygame.K_RIGHT:
+                lutador1.speedx -= 1
+            if event.key == pygame.K_a:
+                lutador2.speedx -= 1
+            if event.key == pygame.K_d:
+                lutador2.speedx += 1
 
     window.blit(Fd,(0,0))
     #atualiza
