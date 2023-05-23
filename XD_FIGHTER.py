@@ -34,9 +34,16 @@ class CR7(pygame.sprite.Sprite):
     def update(self):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
+        self.speedy = 0
+        if self.rect.y < chao:
+            self.rect.y += 1
+        if self.rect.x > 600:
+            self.rect.x = 600
+        if self.rect.x < 150:
+            self.rect.x = 150
     def gravity(self):
         self.movey += 3.2 # how fast player falls
-        if self.rect.y > chao and self.movey >= 0:
+        if self.rect.y < chao and self.movey >= 0:
             self.movey = 0
             self.rect.y = chao-ty-ty
 class JB(pygame.sprite.Sprite):
@@ -52,16 +59,20 @@ class JB(pygame.sprite.Sprite):
         self.movey = 0
 
     def update(self):
-            self.rect.x += self.speedx
-            self.rect.y += self.speedy
-            self.speedy = 0
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+        self.speedy = 0
 
-            if self.rect.y < chao:
-                self.rect.y += 1
+        if self.rect.y < chao:
+            self.rect.y += 1
+        if self.rect.x > 600:
+            self.rect.x = 600
+        if self.rect.x < 150:
+            self.rect.x = 150
             
     def gravity(self):
         self.movey += 3.2 # how fast player falls
-        if self.rect.y > chao and self.movey >= 0:
+        if self.rect.y < chao and self.movey >= 0:
             self.movey = 0
             self.rect.y = chao-ty-ty
 #começo !!!
@@ -80,17 +91,17 @@ while game:
         if event.type == pygame.KEYDOWN:
             # Dependendo da tecla, altera a velocidade.
             if event.key == pygame.K_LEFT:
-                lutador1.speedx -= 150
+                lutador1.speedx -= 1
             if event.key == pygame.K_RIGHT:
-                lutador1.speedx += 150
+                lutador1.speedx += 1
             if event.key == pygame.K_UP:
                 lutador1.speedy -= 150
             if event.key == pygame.K_w:
                 lutador2.speedy -= 150
             if event.key == pygame.K_a:
-                lutador2.speedx -= 150
+                lutador2.speedx -= 1
             if event.key == pygame.K_d:
-                lutador2.speedx += 150
+                lutador2.speedx += 1
         # Verifica se soltou alguma tecla.
         if event.type == pygame.KEYUP:
             # Dependendo da tecla, altera a velocidade.
