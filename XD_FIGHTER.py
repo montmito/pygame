@@ -9,7 +9,7 @@ comprimento = 800
 altura = 600
 window = pygame.display.set_mode((comprimento, altura))
 pygame.display.set_caption('XD fighter')
-g = 5
+g = 15
 #gerando imagem(fd,cr7,jb)
 
 Fd = pygame.image.load('Imagens pygame/fd_pixel2.png').convert_alpha()
@@ -31,6 +31,7 @@ class CR7(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
         self.movey = 0
+        self.podepular = True
     def update(self):
         
         self.rect.x += self.speedx
@@ -39,6 +40,7 @@ class CR7(pygame.sprite.Sprite):
         #self.speedy = 0
         if self.rect.bottom >= chao:
             self.rect.y = chao
+            self.podepular = True
         if self.rect.x > 600:
             self.rect.x = 600
         if self.rect.x < 150:
@@ -54,7 +56,7 @@ class JB(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
         self.movey = 0
-
+        self.podepular = True
     def update(self):
 
         self.rect.x += self.speedx
@@ -64,6 +66,7 @@ class JB(pygame.sprite.Sprite):
 
         if self.rect.bottom >= chao:
             self.rect.y = chao
+            self.podepular = True
         if self.rect.x > 600:
             self.rect.x = 600
         if self.rect.x < 150:
@@ -85,6 +88,7 @@ while game:
     clock.tick(FPS)
     #eventos
     for event in pygame.event.get():
+        pulos = 1
         #consequências
         if event.type == pygame.QUIT:
             game = False
@@ -96,11 +100,15 @@ while game:
             if event.key == pygame.K_RIGHT:
                 lutador1.speedx += 25
             if event.key == pygame.K_UP:
-                lutador1.speedy = -50
-                lutador1.rect.y += -30
+                if lutador1.podepular == True:
+                    lutador1.speedy = -50
+                    lutador1.rect.y += -30
+                    lutador1.podepular = False
             if event.key == pygame.K_w:
-                lutador2.speedy = -50
-                lutador2.rect.y += -30
+                if lutador2.podepular == True:
+                    lutador2.speedy = -50
+                    lutador2.rect.y += -30
+                    lutador2.podepular = False
             if event.key == pygame.K_a:
                 lutador2.speedx -= 25
             if event.key == pygame.K_d:
