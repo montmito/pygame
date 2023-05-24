@@ -11,13 +11,16 @@ window = pygame.display.set_mode((comprimento, altura))
 pygame.display.set_caption('XD fighter')
 g = 15
 #gerando imagem(fd,cr7,jb)
-
 Fd = pygame.image.load('Imagens pygame/fd_pixel2.png').convert_alpha()
 cr7 = pygame.image.load('Imagens pygame/cr7_neutro_pixel.png').convert_alpha()
 jb = pygame.image.load('Imagens pygame/jb_n_e.png').convert_alpha()
 cr7 = pygame.transform.scale(cr7, (75, 75))
 Fd = pygame.transform.scale(Fd, (comprimento, altura))
 jb = pygame.transform.scale(jb,(75, 75))
+chute_cr7 = pygame.image.load('Imagens pygame/cr7_c_d.png').convert_alpha()
+chute_cr7 = pygame.transform.scale(chute_cr7, (75,75))
+chute_jb = pygame.image.load('Imagens pygame/jb_c_e.png').convert_alpha()
+chute_jb = pygame.transform.scale(chute_jb, (75,75))
 
 #classes
 class CR7(pygame.sprite.Sprite):
@@ -32,12 +35,14 @@ class CR7(pygame.sprite.Sprite):
         self.speedy = 0
         self.movey = 0
         self.podepular = True
+        self.chutou = False
+        self.deschutou = 0
     def update(self):
         
         self.rect.x += self.speedx
         self.rect.y += self.speedy
         self.speedy += g
-        #self.speedy = 0
+
         if self.rect.bottom >= chao:
             self.rect.y = chao
             self.podepular = True
@@ -45,6 +50,12 @@ class CR7(pygame.sprite.Sprite):
             self.rect.x = 600
         if self.rect.x < 150:
             self.rect.x = 150
+
+        agora = pygame.time.get_ticks()
+        if agora - self.deschutou >= 1000:
+            self.chutou = False
+            self.image = cr7
+            self.deschutou = agora
 class JB(pygame.sprite.Sprite):
     def __init__(self, img):
         pygame.sprite.Sprite.__init__(self)
@@ -57,12 +68,13 @@ class JB(pygame.sprite.Sprite):
         self.speedy = 0
         self.movey = 0
         self.podepular = True
+        self.chutou = False
+        self.deschutou = 0
     def update(self):
 
         self.rect.x += self.speedx
         self.rect.y += self.speedy
         self.speedy += g
-        #self.speedy = 0
 
         if self.rect.bottom >= chao:
             self.rect.y = chao
@@ -71,6 +83,12 @@ class JB(pygame.sprite.Sprite):
             self.rect.x = 600
         if self.rect.x < 150:
             self.rect.x = 150
+
+        agora = pygame.time.get_ticks()
+        if agora - self.deschutou >= 1000:
+            self.chutou = False
+            self.image = jb
+            self.deschutou = agora
             
 
 #começo !!!
@@ -88,7 +106,6 @@ while game:
     clock.tick(FPS)
     #eventos
     for event in pygame.event.get():
-        pulos = 1
         #consequências
         if event.type == pygame.QUIT:
             game = False
@@ -104,6 +121,9 @@ while game:
                     lutador1.speedy = -50
                     lutador1.rect.y += -30
                     lutador1.podepular = False
+            if event.key == pygame.K_e:
+                lutador1.chutou = True
+                lutador1.image = chute_cr7
             if event.key == pygame.K_w:
                 if lutador2.podepular == True:
                     lutador2.speedy = -50
@@ -113,6 +133,11 @@ while game:
                 lutador2.speedx -= 25
             if event.key == pygame.K_d:
                 lutador2.speedx += 25
+            if event.key == pygame.K_p:
+                lutador2.chutou = True
+                lutador2.image = chute_jb
+
+            
         # Verifica se soltou alguma tecla.
         if event.type == pygame.KEYUP:
             # Dependendo da tecla, altera a velocidade.
@@ -120,10 +145,6 @@ while game:
                 lutador1.speedx += 25
             if event.key == pygame.K_RIGHT:
                 lutador1.speedx -= 25
-            # if event.key == pygame.K_w:
-            #     lutador2.speedy += 100
-            # if event.key == pygame.K_UP:
-            #     lutador1.speedy += 100
             if event.key == pygame.K_a:
                 lutador2.speedx += 25
             if event.key == pygame.K_d:
