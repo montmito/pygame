@@ -14,6 +14,7 @@ g = 15
 Fd = pygame.image.load('Imagens pygame/fd_pixel2.png').convert_alpha()
 cr7 = pygame.image.load('Imagens pygame/cr7_neutro_pixel.png').convert_alpha()
 jb = pygame.image.load('Imagens pygame/jb_n_e.png').convert_alpha()
+bala = pygame.image.load('Imagens pygame/bala.png').convert_alpha()
 cr7 = pygame.transform.scale(cr7, (75, 75))
 Fd = pygame.transform.scale(Fd, (comprimento, altura))
 jb = pygame.transform.scale(jb,(75, 75))
@@ -56,6 +57,29 @@ class CR7(pygame.sprite.Sprite):
             self.chutou = False
             self.image = cr7
             self.deschutou = agora
+
+
+
+
+
+class Tiro(pygame.sprite.Sprite):
+    def __init__(self, img, pos_x, pos_y, direcao):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = pos_x
+        self.rect.y = pos_y
+        self.speedx = 10  # Ajuste a velocidade conforme necessário
+        self.direcao = direcao  # 'esquerda' ou 'direita' dependendo da direção do tiro
+
+    def update(self):
+        if self.direcao == 'esquerda':
+            self.rect.x -= self.speedx
+        elif self.direcao == 'direita':
+            self.rect.x += self.speedx
+
+
+
 class JB(pygame.sprite.Sprite):
     def __init__(self, img):
         pygame.sprite.Sprite.__init__(self)
@@ -101,6 +125,7 @@ FPS = 30
 
 lutador1 = CR7(cr7)
 lutador2 = JB(jb)
+bullet = Tiro(bala)
 
 while game:
     clock.tick(FPS)
