@@ -1,4 +1,5 @@
 import pygame
+import sys
 
 pygame.init()
 pygame.mixer.init()
@@ -11,6 +12,10 @@ window = pygame.display.set_mode((comprimento, altura))
 pygame.display.set_caption('XD fighter')
 g = 15
 #gerando imagem(fd,cr7,jb)
+xd = pygame.image.load('Imagens pygame/xdreal.png').convert_alpha()
+xd = pygame.transform.scale(xd, (200, 200))
+fighter = pygame.image.load('Imagens pygame/fighter-logo-png-transparent.png').convert_alpha()
+fighter = pygame.transform.scale(fighter, (200, 200))
 Fd = pygame.image.load('Imagens pygame/fd_pixel2.png').convert_alpha()
 cr7 = pygame.image.load('Imagens pygame/cr7_neutro_pixel.png').convert_alpha()
 jb = pygame.image.load('Imagens pygame/jb_n_e.png').convert_alpha()
@@ -123,10 +128,35 @@ class JB(pygame.sprite.Sprite):
             self.chutou = False
             self.image = jb
             self.deschutou = agora
+
+
+
+def teladeinicio():
+    
+    instructions_font = pygame.font.Font (None, 32 )
+
+    
+    instructions_text = instructions_font.render("Click para iniciar", True, (255, 255, 255))
+
+    window.blit(Fd, (0, 0))
+    window.blit(xd, (comprimento // 2 - xd.get_width() // 2, altura // 2 - 100))
+    window.blit(fighter, (comprimento // 2 - fighter.get_width() // 2, altura // 2 + 150))
+    window.blit(instructions_text, (comprimento // 2 - instructions_text.get_width() // 2, altura // 2 + 50))
+    pygame.display.update()
+
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                waiting = False
+
             
 
 #começo !!!
-
+teladeinicio()
 game = True
 #ajustes
 clock = pygame.time.Clock()
@@ -204,5 +234,4 @@ while game:
     pygame.display.update() 
 #fim
 pygame.quit() 
-
 
