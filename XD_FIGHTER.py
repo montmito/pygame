@@ -135,28 +135,39 @@ def teladeinicio():
     
     instructions_font = pygame.font.Font (None, 32 )
 
+    pygame.mixer.music.load('Som pygame/08 Guile.mp3')
+    pygame.mixer.music.play(-1)
+
+
     
     instructions_text = instructions_font.render("Click para iniciar", True, (255, 255, 255))
 
     window.blit(Fd, (0, 0))
     window.blit(xd, (comprimento // 2 - xd.get_width() // 2, altura // 2 - 100))
-    window.blit(fighter, (comprimento // 2 - fighter.get_width() // 2, altura // 2 + 150))
-    window.blit(instructions_text, (comprimento // 2 - instructions_text.get_width() // 2, altura // 2 + 50))
+    window.blit(fighter, (comprimento // 2 - fighter.get_width() // 2, altura // 2 ))
+    window.blit(instructions_text, (comprimento // 2 - instructions_text.get_width() // 2, altura // 2 + 200 ))
     pygame.display.update()
 
     waiting = True
     while waiting:
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 waiting = False
+
+
+    pygame.mixer.music.stop()
+        
 
             
 
 #começo !!!
 teladeinicio()
+
+
 game = True
 #ajustes
 clock = pygame.time.Clock()
@@ -232,6 +243,8 @@ while game:
     window.blit(lutador2.image, lutador2.rect)
     grupo_tiros.draw(window)
     pygame.display.update() 
+
+    
 #fim
 pygame.quit() 
 
