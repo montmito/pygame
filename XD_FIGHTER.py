@@ -34,6 +34,7 @@ soco_cr7 = pygame.transform.scale(soco_cr7, (75, 75))
 shot = pygame.image.load('Imagens pygame/jb_t_e.png').convert_alpha()
 shot = pygame.transform.scale(shot, (75, 75))
 siuuu = pygame.mixer.Sound('Som pygame/cr_suuu.mp3')
+muchasgracias = pygame.mixer.Sound('Som pygame/muchasgracias.mp3')
 bang = pygame.mixer.Sound('Som pygame/tiro.mp3')
 shaokahn = pygame.mixer.Sound('Som pygame/shaokahn.mp3')
 grupo_tiros = pygame.sprite.Group()
@@ -57,7 +58,9 @@ class CR7(pygame.sprite.Sprite):
         self.movey = 0
         self.podepular = True
         self.chutou = False
+        self.socou = False
         self.deschutou = 0
+        self.dessocou = False
         self.health = 100 
         self.direction = 'direita'
         self.previous_direction = self.direction
@@ -76,6 +79,18 @@ class CR7(pygame.sprite.Sprite):
             self.rect.x = 600
         if self.rect.x < 150:
             self.rect.x = 150
+        
+        if self.chutou:
+            if self.direction == 'direita':
+                self.image = chute_cr7
+            elif self.direction == 'esquerda':
+                self.image = pygame.transform.flip(chute_cr7, True, False)
+        if self.socou:
+            if self.direction == 'direita':
+                self.image = soco_cr7
+            elif self.direction == 'esquerda':
+                self.image = pygame.transform.flip(soco_cr7, True, False)
+            
         # if self.speedx > 0:
         #     self.direction = 'direita'
         # elif self.speedx < 0:
@@ -93,6 +108,14 @@ class CR7(pygame.sprite.Sprite):
             elif self.direction == 'esquerda':
                 self.image = self.image_esquerda
             self.deschutou = agora
+        
+        if agora - self.dessocou >= 800:
+            self.socou = False
+            if self.direction == 'direita':
+                self.image = self.image_direita
+            elif self.direction == 'esquerda':
+                self.image = self.image_esquerda
+            self.dessocou = agora
 
 
 
@@ -132,6 +155,8 @@ class JB(pygame.sprite.Sprite):
         self.podepular = True
         self.chutou = False
         self.deschutou = 0
+        self.atirou = False
+        self.desatirou = 0
         self.health = 100
         self.direction = 'esquerda'
         self.previous_direction = self.direction
@@ -164,6 +189,11 @@ class JB(pygame.sprite.Sprite):
             self.rect.x = 600
         if self.rect.x < 150:
             self.rect.x = 150
+        if self.chutou:
+            if self.direction == 'direita':
+                self.image = pygame.transform.flip(chute_jb, True, False)
+            elif self.direction == 'esquerda':
+                self.image = chute_jb
 
         agora = pygame.time.get_ticks()
         if agora - self.deschutou >= 1000:
@@ -279,6 +309,10 @@ while game:
                 lutador1.chutou = True
                 lutador1.image = chute_cr7
                 siuuu.play()
+            if event.key == pygame.K_LCTRL:
+                lutador1.socou = True
+                lutador1.image = soco_cr7
+                muchasgracias.play()
             if event.key == pygame.K_w:
                 if lutador2.podepular == True:
                     lutador2.speedy = -50
