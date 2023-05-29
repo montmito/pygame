@@ -114,9 +114,10 @@ class JB(pygame.sprite.Sprite):
         self.chutou = False
         self.deschutou = 0
         self.health = 100
+        self.direction = 'esquerda'
 
     def atirar(self):
-        tiro_jb = Tiro(bala, self.rect.x, self.rect.y, 'direita')
+        tiro_jb = Tiro(bala, self.rect.x, self.rect.y, self.direction)
         grupo_tiros.add(tiro_jb)
 
     def update(self):
@@ -138,6 +139,10 @@ class JB(pygame.sprite.Sprite):
             self.chutou = False
             self.image = jb
             self.deschutou = agora
+        if self.speedx <=0:
+            self.direction = 'esquerda'
+        else:
+            self.direction = 'direita'
 
 
 
@@ -237,8 +242,8 @@ while game:
             if event.key == pygame.K_e:
                 lutador1.chutou = True
                 if flip == True:
-                    chute_cr7 = pygame.transform.flip(chute_cr7, True, False)
-                    lutador1.image = chute_cr7
+                    
+                    lutador1.image = pygame.transform.flip(chute_cr7, True, False)
                 else:
                     lutador1.image = chute_cr7
                 siuuu.play()
