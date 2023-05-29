@@ -222,10 +222,7 @@ while game:
         if event.type == pygame.QUIT:
             game = False
             #saída 
-        if lutador1.rect.x > lutador2.rect.x:
-            cr7 = pygame.transform.flip(cr7, True, False)
-            jb = pygame.transform.flip(jb, True, False)
-            flip = True
+        
             # chute_cr7 = pygame.transform.flip(chute_cr7, True, False)
             # chute_jb = pygame.transform.flip(chute_jb, True, False)
             # soco_cr7 = pygame.transform.flip(soco_cr7, True, False)
@@ -233,8 +230,11 @@ while game:
             # Dependendo da tecla, altera a velocidade.
             if event.key == pygame.K_LEFT:
                 lutador1.speedx -= 25
+                lutador1.image = pygame.transform.flip(cr7, True, False)
+                flip = True
             if event.key == pygame.K_RIGHT:
                 lutador1.speedx += 25
+                lutador1.image = cr7
             if event.key == pygame.K_UP:
                 if lutador1.podepular == True:
                     lutador1.speedy = -50
@@ -243,7 +243,7 @@ while game:
                     lutador1.podepular = False
             if event.key == pygame.K_e:
                 lutador1.chutou = True
-                if flip == True:
+                if flip:
                     
                     lutador1.image = pygame.transform.flip(chute_cr7, True, False)
                 else:
@@ -257,13 +257,23 @@ while game:
                     lutador2.podepular = False
             if event.key == pygame.K_a:
                 lutador2.speedx -= 25
+                lutador2.image = jb
             if event.key == pygame.K_d:
                 lutador2.speedx += 25
+                lutador2.image = pygame.transform.flip(jb, True, False)
+                flip = True
             if event.key == pygame.K_p:
                 lutador2.chutou = True
-                lutador2.image = chute_jb
+                if flip:
+                    lutador2.image = pygame.transform.flip(chute_jb, True, False)
+                else:
+                    lutador2.image = chute_jb
             if event.key == pygame.K_o:
-                lutador2.image = shot
+                if flip:
+                    lutador2.image = pygame.transform.flip(shot, True, False)
+                else:
+                    lutador2.image = shot
+                
                 lutador2.atirar()
                 bang.play() 
         # Verifica se soltou alguma tecla.
