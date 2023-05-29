@@ -280,3 +280,5 @@ while game:
     
 #fim
 pygame.quit() 
+
+
