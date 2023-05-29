@@ -11,7 +11,7 @@ altura = 600
 window = pygame.display.set_mode((comprimento, altura))
 pygame.display.set_caption('XD fighter')
 g = 15
-#gerando imagem(fd,cr7,jb)
+#imagens!!!
 xd = pygame.image.load('Imagens pygame/xdreal.png').convert_alpha()
 xd = pygame.transform.scale(xd, (200, 200))
 fighter = pygame.image.load('Imagens pygame/fighter-logo-png-transparent.png').convert_alpha()
@@ -187,11 +187,6 @@ def healthbars(window, x, y, comprimento, altura, health):
     # Set the font and size for the text
     font = pygame.font.Font(None, 24)
 
-   
-
-
-    
-
 #começo !!!
 teladeinicio()
 
@@ -205,15 +200,22 @@ FPS = 30
 lutador1 = CR7(cr7)
 lutador2 = JB(jb,)
 
-
 while game: 
     clock.tick(FPS)
     #eventos
+    flip = False
     for event in pygame.event.get():
         #consequências
         if event.type == pygame.QUIT:
             game = False
             #saída 
+        if lutador1.rect.x > lutador2.rect.x:
+            cr7 = pygame.transform.flip(cr7, True, False)
+            jb = pygame.transform.flip(jb, True, False)
+            flip = True
+            # chute_cr7 = pygame.transform.flip(chute_cr7, True, False)
+            # chute_jb = pygame.transform.flip(chute_jb, True, False)
+            # soco_cr7 = pygame.transform.flip(soco_cr7, True, False)
         if event.type == pygame.KEYDOWN:
             # Dependendo da tecla, altera a velocidade.
             if event.key == pygame.K_LEFT:
@@ -227,7 +229,11 @@ while game:
                     lutador1.podepular = False
             if event.key == pygame.K_e:
                 lutador1.chutou = True
-                lutador1.image = chute_cr7
+                if flip == True:
+                    chute_cr7 = pygame.transform.flip(chute_cr7, True, False)
+                    lutador1.image = chute_cr7
+                else:
+                    lutador1.image = chute_cr7
                 siuuu.play()
             if event.key == pygame.K_w:
                 if lutador2.podepular == True:
