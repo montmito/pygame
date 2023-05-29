@@ -12,6 +12,8 @@ window = pygame.display.set_mode((comprimento, altura))
 pygame.display.set_caption('XD fighter')
 g = 15
 #imagens!!!
+fightprompt = pygame.image.load('Imagens pygame/fightprompt.png')
+fightprompt = pygame.transform.scale(fightprompt, (200, 200))
 xd = pygame.image.load('Imagens pygame/xdreal.png').convert_alpha()
 xd = pygame.transform.scale(xd, (200, 200))
 fighter = pygame.image.load('Imagens pygame/fighter-logo-png-transparent.png').convert_alpha()
@@ -33,6 +35,7 @@ shot = pygame.image.load('Imagens pygame/jb_t_e.png').convert_alpha()
 shot = pygame.transform.scale(shot, (75, 75))
 siuuu = pygame.mixer.Sound('Som pygame/cr_suuu.mp3')
 bang = pygame.mixer.Sound('Som pygame/tiro.mp3')
+shaokahn = pygame.mixer.Sound('Som pygame/shaokahn.mp3')
 grupo_tiros = pygame.sprite.Group()
 cr7_victory = pygame.image.load('Imagens pygame/cristiano.png').convert_alpha()
 cr7_victory = pygame.transform.scale(cr7_victory, (comprimento, altura))
@@ -226,6 +229,8 @@ teladeinicio()
 
 
 game = True
+shaokahn.play()
+
 #ajustes
 clock = pygame.time.Clock()
 FPS = 30
@@ -348,4 +353,3 @@ while game:
     
 #fim
 pygame.quit() 
-
