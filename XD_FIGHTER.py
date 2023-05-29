@@ -79,6 +79,8 @@ class CR7(pygame.sprite.Sprite):
 
 
 
+
+
 class Tiro(pygame.sprite.Sprite):
     def __init__(self, img, pos_x, pos_y, direcao):
         pygame.sprite.Sprite.__init__(self)
@@ -196,10 +198,15 @@ game = True
 clock = pygame.time.Clock()
 FPS = 30
 
+vida_cr7 = 100
+vida_jb = 100
 
 lutador1 = CR7(cr7)
-lutador2 = JB(jb,)
-
+lutador2 = JB(jb)
+sprite_lutador1 = pygame.sprite.Group()
+sprite_lutador1.add(lutador1)
+sprite_lutador2 = pygame.sprite.Group()
+sprite_lutador2.add(lutador2)
 while game: 
     clock.tick(FPS)
     #eventos
@@ -250,12 +257,7 @@ while game:
             if event.key == pygame.K_o:
                 lutador2.image = shot
                 lutador2.atirar()
-                bang.play()
-                
-                
-
-
-            
+                bang.play() 
         # Verifica se soltou alguma tecla.
         if event.type == pygame.KEYUP:
             # Dependendo da tecla, altera a velocidade.
@@ -267,6 +269,16 @@ while game:
                 lutador2.speedx += 25
             if event.key == pygame.K_d:
                 lutador2.speedx -= 25
+        hits = pygame.sprite.spritecollide(lutador1, sprite_lutador2, True)
+        hit2 = []
+        if hits != hit2:
+            vida_cr7 -= 10
+            vida_jb -= 10
+            print(vida_jb)
+            print(hits)
+            hit2 = hits
+            print(hit2)
+
 
 
 
