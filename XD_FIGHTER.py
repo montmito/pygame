@@ -38,6 +38,7 @@ cr7_victory = pygame.image.load('Imagens pygame/cristiano.png').convert_alpha()
 cr7_victory = pygame.transform.scale(cr7_victory, (comprimento, altura))
 jb_victory = pygame.image.load('Imagens pygame/james-bond.png').convert_alpha()
 jb_victory = pygame.transform.scale(jb_victory, (comprimento, altura))
+jump = pygame.mixer.Sound('Som pygame/smw_jump.wav')
 
 #classes
 class CR7(pygame.sprite.Sprite):
@@ -238,6 +239,7 @@ while game:
                 if lutador1.podepular == True:
                     lutador1.speedy = -50
                     lutador1.rect.y += -30
+                    jump.play()
                     lutador1.podepular = False
             if event.key == pygame.K_e:
                 lutador1.chutou = True
@@ -251,6 +253,7 @@ while game:
                 if lutador2.podepular == True:
                     lutador2.speedy = -50
                     lutador2.rect.y += -30
+                    jump.play()
                     lutador2.podepular = False
             if event.key == pygame.K_a:
                 lutador2.speedx -= 25
