@@ -56,6 +56,10 @@ class CR7(pygame.sprite.Sprite):
         self.chutou = False
         self.deschutou = 0
         self.health = 100 
+        self.direction = 'direita'
+        self.previous_direction = self.direction
+        self.image_direita = img
+        self.image_esquerda = pygame.transform.flip(img, True, False)
     def update(self):
         
         self.rect.x += self.speedx
@@ -69,11 +73,22 @@ class CR7(pygame.sprite.Sprite):
             self.rect.x = 600
         if self.rect.x < 150:
             self.rect.x = 150
+        # if self.speedx > 0:
+        #     self.direction = 'direita'
+        # elif self.speedx < 0:
+        #     self.direction = 'esquerda'
+        # if self.direction == 'esquerda':
+        #     self.image = pygame.transform.flip(self.image, True, False)
+        
+        
 
         agora = pygame.time.get_ticks()
         if agora - self.deschutou >= 1000:
             self.chutou = False
-            self.image = cr7
+            if self.direction == 'direita':
+                self.image = self.image_direita
+            elif self.direction == 'esquerda':
+                self.image = self.image_esquerda
             self.deschutou = agora
 
 
@@ -116,6 +131,9 @@ class JB(pygame.sprite.Sprite):
         self.deschutou = 0
         self.health = 100
         self.direction = 'esquerda'
+        self.previous_direction = self.direction
+        self.image_direita = pygame.transform.flip(img, True, False)
+        self.image_esquerda = img
 
     def atirar(self):
         tiro_jb = Tiro(bala, self.rect.x, self.rect.y, self.direction)
@@ -126,6 +144,15 @@ class JB(pygame.sprite.Sprite):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
         self.speedy += g
+        
+        # if self.speedx > 0:
+        #     self.direction = 'direita'
+        # elif self.speedx < 0:
+        #     self.direction = 'esquerda'
+        # if self.direction == 'direita':
+        #     self.image = pygame.transform.flip(self.image, True, False)
+        # else:
+        #     self.image = self.image
 
         if self.rect.bottom >= chao:
             self.rect.y = chao
@@ -138,12 +165,11 @@ class JB(pygame.sprite.Sprite):
         agora = pygame.time.get_ticks()
         if agora - self.deschutou >= 1000:
             self.chutou = False
-            self.image = jb
+            if self.direction == 'direita':
+                self.image = self.image_direita
+            elif self.direction == 'esquerda':
+                self.image = self.image_esquerda
             self.deschutou = agora
-        if self.speedx <=0:
-            self.direction = 'esquerda'
-        else:
-            self.direction = 'direita'
 
 
 
@@ -216,7 +242,7 @@ sprite_lutador2.add(lutador2)
 while game: 
     clock.tick(FPS)
     #eventos
-    flip = False
+    
     for event in pygame.event.get():
         #consequências
         if event.type == pygame.QUIT:
@@ -230,11 +256,14 @@ while game:
             # Dependendo da tecla, altera a velocidade.
             if event.key == pygame.K_LEFT:
                 lutador1.speedx -= 25
-                lutador1.image = pygame.transform.flip(cr7, True, False)
-                flip = True
+                lutador1.image = lutador1.image_esquerda
+                lutador1.direction = 'esquerda'
+                
             if event.key == pygame.K_RIGHT:
                 lutador1.speedx += 25
-                lutador1.image = cr7
+                lutador1.image =lutador1.image_direita
+                lutador1.direction = 'direita'
+                
             if event.key == pygame.K_UP:
                 if lutador1.podepular == True:
                     lutador1.speedy = -50
@@ -243,11 +272,7 @@ while game:
                     lutador1.podepular = False
             if event.key == pygame.K_e:
                 lutador1.chutou = True
-                if flip:
-                    
-                    lutador1.image = pygame.transform.flip(chute_cr7, True, False)
-                else:
-                    lutador1.image = chute_cr7
+                lutador1.image = chute_cr7
                 siuuu.play()
             if event.key == pygame.K_w:
                 if lutador2.podepular == True:
@@ -257,22 +282,20 @@ while game:
                     lutador2.podepular = False
             if event.key == pygame.K_a:
                 lutador2.speedx -= 25
-                lutador2.image = jb
+                lutador2.image = lutador2.image_esquerda
+                lutador2.direction = 'esquerda'
             if event.key == pygame.K_d:
                 lutador2.speedx += 25
-                lutador2.image = pygame.transform.flip(jb, True, False)
-                flip = True
+                lutador2.image = lutador2.image_direita
+                lutador2.direction = 'direita'
+                
             if event.key == pygame.K_p:
                 lutador2.chutou = True
-                if flip:
-                    lutador2.image = pygame.transform.flip(chute_jb, True, False)
-                else:
-                    lutador2.image = chute_jb
+            
+                lutador2.image = chute_jb
             if event.key == pygame.K_o:
-                if flip:
-                    lutador2.image = pygame.transform.flip(shot, True, False)
-                else:
-                    lutador2.image = shot
+               
+                lutador2.image = shot
                 
                 lutador2.atirar()
                 bang.play() 
@@ -287,15 +310,18 @@ while game:
                 lutador2.speedx += 25
             if event.key == pygame.K_d:
                 lutador2.speedx -= 25
-        hits = pygame.sprite.spritecollide(lutador1, sprite_lutador2, True)
-        hit2 = []
-        if hits != hit2:
-            vida_cr7 -= 10
-            vida_jb -= 10
-            print(vida_jb)
-            print(hits)
-            hit2 = hits
-            print(hit2)
+        
+    
+    
+    #atualiza
+    # lutador1.update()
+    # lutador2.update()
+    # grupo_tiros.update()
+    # window.blit(lutador1.image, lutador1.rect)
+    # window.blit(lutador2.image, lutador2.rect)
+    # grupo_tiros.draw(window)
+    # pygame.display.update()
+
 
 
 
@@ -313,8 +339,13 @@ while game:
     grupo_tiros.draw(window)
     pygame.display.update() 
 
+
+
+
+
+    
+
     
 #fim
 pygame.quit() 
-
 
