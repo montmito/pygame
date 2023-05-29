@@ -1,4 +1,5 @@
 import pygame
+import sys
 
 pygame.init()
 pygame.mixer.init()
@@ -11,6 +12,10 @@ window = pygame.display.set_mode((comprimento, altura))
 pygame.display.set_caption('XD fighter')
 g = 15
 #gerando imagem(fd,cr7,jb)
+xd = pygame.image.load('Imagens pygame/xdreal.png').convert_alpha()
+xd = pygame.transform.scale(xd, (200, 200))
+fighter = pygame.image.load('Imagens pygame/fighter-logo-png-transparent.png').convert_alpha()
+fighter = pygame.transform.scale(fighter, (200, 200))
 Fd = pygame.image.load('Imagens pygame/fd_pixel2.png').convert_alpha()
 cr7 = pygame.image.load('Imagens pygame/cr7_neutro_pixel.png').convert_alpha()
 jb = pygame.image.load('Imagens pygame/jb_n_e.png').convert_alpha()
@@ -22,11 +27,17 @@ chute_cr7 = pygame.image.load('Imagens pygame/cr7_c_d.png').convert_alpha()
 chute_cr7 = pygame.transform.scale(chute_cr7, (75,75))
 chute_jb = pygame.image.load('Imagens pygame/jb_c_e.png').convert_alpha()
 chute_jb = pygame.transform.scale(chute_jb, (75,75))
+soco_cr7 = pygame.image.load('Imagens pygame/cr7_s_d.png').convert_alpha()
+soco_cr7 = pygame.transform.scale(soco_cr7, (75, 75))
 shot = pygame.image.load('Imagens pygame/jb_t_e.png').convert_alpha()
 shot = pygame.transform.scale(shot, (75, 75))
 siuuu = pygame.mixer.Sound('Som pygame/cr_suuu.mp3')
 bang = pygame.mixer.Sound('Som pygame/tiro.mp3')
 grupo_tiros = pygame.sprite.Group()
+cr7_victory = pygame.image.load('Imagens pygame/cristiano.png').convert_alpha()
+cr7_victory = pygame.transform.scale(cr7_victory, (comprimento, altura))
+jb_victory = pygame.image.load('Imagens pygame/james-bond.png').convert_alpha()
+jb_victory = pygame.transform.scale(jb_victory, (comprimento, altura))
 
 #classes
 class CR7(pygame.sprite.Sprite):
@@ -43,6 +54,7 @@ class CR7(pygame.sprite.Sprite):
         self.podepular = True
         self.chutou = False
         self.deschutou = 0
+        self.health = 100 
     def update(self):
         
         self.rect.x += self.speedx
@@ -79,13 +91,13 @@ class Tiro(pygame.sprite.Sprite):
 
     def update(self):
         if self.direcao == 'esquerda':
-            self.rect.x += self.speedx
-        elif self.direcao == 'direita':
             self.rect.x -= self.speedx
+        elif self.direcao == 'direita':
+            self.rect.x += self.speedx
 
 
 
-class JB(pygame.sprite.Sprite):
+class JB(pygame.sprite.Sprite): 
     def __init__(self, img):
         pygame.sprite.Sprite.__init__(self)
         
@@ -99,6 +111,7 @@ class JB(pygame.sprite.Sprite):
         self.podepular = True
         self.chutou = False
         self.deschutou = 0
+        self.health = 100
 
     def atirar(self):
         tiro_jb = Tiro(bala, self.rect.x, self.rect.y, 'direita')
@@ -123,9 +136,65 @@ class JB(pygame.sprite.Sprite):
             self.chutou = False
             self.image = jb
             self.deschutou = agora
-            
+
+
+
+def teladeinicio():
+    
+    instructions_font = pygame.font.Font (None, 32 )
+
+    pygame.mixer.music.load('Som pygame/08 Guile.mp3')
+    pygame.mixer.music.play(-1)
+
+
+    
+    instructions_text = instructions_font.render("Click para iniciar", True, (255, 255, 255))
+
+    window.blit(Fd, (0, 0))
+    window.blit(xd, (comprimento // 2 - xd.get_width() // 2, altura // 2 - 100))
+    window.blit(fighter, (comprimento // 2 - fighter.get_width() // 2, altura // 2 ))
+    window.blit(instructions_text, (comprimento // 2 - instructions_text.get_width() // 2, altura // 2 + 200 ))
+    pygame.display.update()
+
+    waiting = True
+    while waiting:
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                waiting = False
+
+
+    pygame.mixer.music.stop()
+        
+
+def healthbars(window, x, y, comprimento, altura, health):
+    BORDER_COLOR = (255, 255, 255)
+    HEALTH_COLOR = (0, 255, 0)
+    BORDER_WIDTH = 2
+
+    # Draw the border of the health bar
+    pygame.draw.rect(window, BORDER_COLOR, (x, y, comprimento, altura), BORDER_WIDTH)
+
+    # Calculate the width of the health bar based on the health value
+    health_width = (health / 100) * (comprimento - 2 * BORDER_WIDTH)
+
+    # Draw the current health level
+    pygame.draw.rect(window, HEALTH_COLOR, (x + BORDER_WIDTH, y + BORDER_WIDTH, health_width, altura - 2 * BORDER_WIDTH))
+
+    # Set the font and size for the text
+    font = pygame.font.Font(None, 24)
+
+   
+
+
+    
 
 #começo !!!
+teladeinicio()
+
 
 game = True
 #ajustes
@@ -137,7 +206,7 @@ lutador1 = CR7(cr7)
 lutador2 = JB(jb,)
 
 
-while game:
+while game: 
     clock.tick(FPS)
     #eventos
     for event in pygame.event.get():
@@ -193,7 +262,12 @@ while game:
             if event.key == pygame.K_d:
                 lutador2.speedx -= 25
 
+
+
+
     window.blit(Fd,(0,0))
+    healthbars(window, 50, 30, 200, 20, lutador1.health)  
+    healthbars(window, comprimento - 250, 30, 200, 20, lutador2.health)  
     #atualiza
     lutador1.update()
     lutador2.update()
@@ -202,6 +276,7 @@ while game:
     window.blit(lutador2.image, lutador2.rect)
     grupo_tiros.draw(window)
     pygame.display.update() 
+
+    
 #fim
 pygame.quit() 
-
