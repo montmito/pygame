@@ -130,7 +130,7 @@ class Tiro(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = pos_x
         self.rect.y = pos_y
-        self.speedx = 10  # Ajuste a velocidade conforme necessário
+        self.speedx = 20  # Ajuste a velocidade conforme necessário
         self.direcao = direcao  # 'esquerda' ou 'direita' dependendo da direção do tiro
 
     def update(self):
@@ -189,11 +189,18 @@ class JB(pygame.sprite.Sprite):
             self.rect.x = 600
         if self.rect.x < 150:
             self.rect.x = 150
+
         if self.chutou:
             if self.direction == 'direita':
                 self.image = pygame.transform.flip(chute_jb, True, False)
             elif self.direction == 'esquerda':
                 self.image = chute_jb
+
+        if self.atirou:
+            if self.direction == 'direita':
+                self.image = pygame.transform.flip(shot, True, False)
+            elif self.direction == 'esquerda':
+                self.image = shot
 
         agora = pygame.time.get_ticks()
         if agora - self.deschutou >= 1000:
@@ -203,6 +210,13 @@ class JB(pygame.sprite.Sprite):
             elif self.direction == 'esquerda':
                 self.image = self.image_esquerda
             self.deschutou = agora
+        if agora - self.desatirou >= 1380:
+            self.atirou = False
+            if self.direction == 'direita':
+                self.image = self.image_direita
+            elif self.direction == 'esquerda':
+                self.image = self.image_esquerda
+            self.desatirou = agora
 
 
 
@@ -290,19 +304,19 @@ while game:
         if event.type == pygame.KEYDOWN:
             # Dependendo da tecla, altera a velocidade.
             if event.key == pygame.K_LEFT:
-                lutador1.speedx -= 25
+                lutador1.speedx -= 15
                 lutador1.image = lutador1.image_esquerda
                 lutador1.direction = 'esquerda'
                 
             if event.key == pygame.K_RIGHT:
-                lutador1.speedx += 25
+                lutador1.speedx += 15
                 lutador1.image =lutador1.image_direita
                 lutador1.direction = 'direita'
                 
             if event.key == pygame.K_UP:
                 if lutador1.podepular == True:
-                    lutador1.speedy = -50
-                    lutador1.rect.y += -30
+                    lutador1.speedy = -72
+                    lutador1.rect.y += -15
                     jump.play()
                     lutador1.podepular = False
             if event.key == pygame.K_e:
@@ -315,40 +329,38 @@ while game:
                 muchasgracias.play()
             if event.key == pygame.K_w:
                 if lutador2.podepular == True:
-                    lutador2.speedy = -50
-                    lutador2.rect.y += -30
+                    lutador2.speedy = -60
+                    lutador2.rect.y += -20
                     jump.play()
                     lutador2.podepular = False
             if event.key == pygame.K_a:
-                lutador2.speedx -= 25
+                lutador2.speedx -= 15
                 lutador2.image = lutador2.image_esquerda
                 lutador2.direction = 'esquerda'
             if event.key == pygame.K_d:
-                lutador2.speedx += 25
+                lutador2.speedx += 15
                 lutador2.image = lutador2.image_direita
                 lutador2.direction = 'direita'
                 
             if event.key == pygame.K_p:
                 lutador2.chutou = True
-            
                 lutador2.image = chute_jb
             if event.key == pygame.K_o:
-               
+                lutador2.atirou = True
                 lutador2.image = shot
-                
                 lutador2.atirar()
                 bang.play() 
         # Verifica se soltou alguma tecla.
         if event.type == pygame.KEYUP:
             # Dependendo da tecla, altera a velocidade.
             if event.key == pygame.K_LEFT:
-                lutador1.speedx += 25
+                lutador1.speedx += 15
             if event.key == pygame.K_RIGHT:
-                lutador1.speedx -= 25
+                lutador1.speedx -= 15
             if event.key == pygame.K_a:
-                lutador2.speedx += 25
+                lutador2.speedx += 15
             if event.key == pygame.K_d:
-                lutador2.speedx -= 25
+                lutador2.speedx -= 15
         
     
     
