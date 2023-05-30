@@ -25,7 +25,6 @@ pygame.display.set_caption('XD fighter')
 g = 15
 
 #imagens!!!
-
 fightprompt = pygame.image.load('Imagens pygame/fightprompt.png')
 
 fightprompt = pygame.transform.scale(fightprompt, (200, 200))
@@ -98,7 +97,6 @@ class CR7(pygame.sprite.Sprite):
 
         pygame.sprite.Sprite.__init__(self)
 
-       
 
         self.image = img
 
@@ -136,10 +134,9 @@ class CR7(pygame.sprite.Sprite):
 
     def update(self):
 
-       
+ 
 
         self.rect.x += self.speedx
-
         self.rect.y += self.speedy
 
         self.speedy += g
@@ -160,7 +157,7 @@ class CR7(pygame.sprite.Sprite):
 
             self.rect.x = 150
 
-       
+
 
         if self.chutou:
 
@@ -182,7 +179,7 @@ class CR7(pygame.sprite.Sprite):
 
                 self.image = pygame.transform.flip(soco_cr7, True, False)
 
-           
+
 
         agora = pygame.time.get_ticks()
 
@@ -200,7 +197,7 @@ class CR7(pygame.sprite.Sprite):
 
             self.deschutou = agora
 
-       
+ 
 
         if agora - self.dessocou >= 800:
 
@@ -258,7 +255,7 @@ class JB(pygame.sprite.Sprite):
 
         pygame.sprite.Sprite.__init__(self)
 
-       
+ 
 
         self.image = img
 
@@ -270,7 +267,7 @@ class JB(pygame.sprite.Sprite):
 
         self.speedx = 0
 
-        self.speedy = 0
+        self.speedy = 0 
 
         self.movey = 0
 
@@ -305,16 +302,16 @@ class JB(pygame.sprite.Sprite):
  
 
     def update(self):
-
- 
-
         self.rect.x += self.speedx
 
         self.rect.y += self.speedy
 
+ 
+
         self.speedy += g
 
-   
+
+ 
 
  
 
@@ -395,7 +392,7 @@ class JB(pygame.sprite.Sprite):
 
 def teladeinicio():
 
-   
+ 
 
     instructions_font = pygame.font.Font (None, 32 )
 
@@ -424,7 +421,7 @@ def teladeinicio():
 
     while waiting:
 
-       
+ 
 
         for event in pygame.event.get():
 
@@ -440,6 +437,30 @@ def teladeinicio():
                 pygame.mixer.music.stop()
 
 
+def vitoriacr7():
+
+    instructions_font = pygame.font.Font (None, 32 )
+
+    instructions_text = instructions_font.render("VITORIA CR7", True, (255, 255, 255))
+
+    window.blit(cr7_victory, (0,0))
+
+    window.blit(instructions_text, (comprimento // 2 - instructions_text.get_width() // 2, altura // 2 + 200 ))
+
+    pygame.display.update()
+
+def vitoriajb():
+
+    instructions_font = pygame.font.Font (None, 32 )
+
+    instructions_text = instructions_font.render("VITORIA JB", True, (255, 255, 255))
+
+    window.blit(jb_victory, (0,0))
+
+    window.blit(instructions_text, (comprimento // 2 - instructions_text.get_width() // 2, altura // 2 + 200 ))
+
+    pygame.display.update()
+ 
 
 def healthbars(window, x, y, comprimento, altura, health):
 
@@ -511,13 +532,15 @@ all_sprite.add(lutador1, lutador2)
 
 #all_sprite.add(lutador1)
 
+jogador_atacante = None
+
 while game:
 
     clock.tick(FPS)
 
     #eventos
 
-   
+ 
 
     for event in pygame.event.get():
 
@@ -528,20 +551,17 @@ while game:
             game = False
 
             #saída
-
-       
-
-            # chute_cr7 = pygame.transform.flip(chute_cr7, True, False)
-
-            # chute_jb = pygame.transform.flip(chute_jb, True, False)
-
-            # soco_cr7 = pygame.transform.flip(soco_cr7, True, False)
-
         if event.type == pygame.KEYDOWN:
+
+ 
 
             # Dependendo da tecla, altera a velocidade.
 
+ 
+
             if event.key == pygame.K_LEFT:
+
+ 
 
                 lutador1.speedx -= 15
 
@@ -549,7 +569,7 @@ while game:
 
                 lutador1.direction = 'esquerda'
 
-               
+ 
 
             if event.key == pygame.K_RIGHT:
 
@@ -559,7 +579,7 @@ while game:
 
                 lutador1.direction = 'direita'
 
-               
+ 
 
             if event.key == pygame.K_UP:
 
@@ -581,6 +601,8 @@ while game:
 
                 siuuu.play()
 
+                jogador_atacante = lutador1
+
             if event.key == pygame.K_o:
 
                 lutador1.socou = True
@@ -589,7 +611,11 @@ while game:
 
                 muchasgracias.play()
 
+                jogador_atacante = lutador1
+
             if event.key == pygame.K_w:
+
+ 
 
                 if lutador2.podepular == True:
 
@@ -604,7 +630,6 @@ while game:
             if event.key == pygame.K_a:
 
                 lutador2.speedx -= 15
-
                 lutador2.image = lutador2.image_esquerda
 
                 lutador2.direction = 'esquerda'
@@ -617,7 +642,7 @@ while game:
 
                 lutador2.direction = 'direita'
 
-               
+ 
 
             if event.key == pygame.K_e:
 
@@ -625,6 +650,7 @@ while game:
 
                 lutador2.image = chute_jb
 
+                jogador_atacante = lutador2
             if event.key == pygame.K_q:
 
                 lutador2.atirou = True
@@ -635,6 +661,7 @@ while game:
 
                 bang.play()
 
+                jogador_atacante = lutador2
         # Verifica se soltou alguma tecla.
 
         if event.type == pygame.KEYUP:
@@ -659,11 +686,25 @@ while game:
 
         if pygame.sprite.collide_rect(lutador1, lutador2):
 
-            lutador1.receber_dano(10)  # Jogador 1 acertou o Jogador 2
+            if jogador_atacante == lutador2:
 
-            lutador2.receber_dano(5)   # Jogador 2 acertou o Jogador 1
+                lutador1.receber_dano(1)  # Jogador 1 acertou o Jogador 2
 
+                vida_cr7 -= 1
 
+            if jogador_atacante == lutador1:
+
+                lutador2.receber_dano(3)   # Jogador 2 acertou o Jogador 1
+
+                vida_jb -= 3
+
+        # if pygame.sprite.collide_rect(lutador1, all_tiro):
+
+        #     lutador2.receber_dano(7)
+
+        if vida_jb <= 0 or vida_cr7 <= 0:
+
+            game = False
 
     window.blit(Fd,(0,0))
 
@@ -686,5 +727,13 @@ while game:
     grupo_tiros.draw(window)
 
     pygame.display.update()
+
+if vida_cr7 <= 0:
+
+    vitoriajb()
+
+if vida_jb <= 0:
+
+    vitoriacr7()
 
 pygame.quit()
