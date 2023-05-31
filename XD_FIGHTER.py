@@ -590,11 +590,13 @@ all_sprite.add(lutador1, lutador2)
 
 #all_sprite.add(lutador1)
 
-jogador_atacante = None
+
 
 while game:
 
     clock.tick(FPS)
+
+    jogador_atacante = None
 
     #eventos
 
@@ -722,6 +724,8 @@ while game:
                 bang.play()
 
                 jogador_atacante = lutador2
+                
+            
         # Verifica se soltou alguma tecla.
 
         if event.type == pygame.KEYUP:
