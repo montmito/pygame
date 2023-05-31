@@ -45,6 +45,8 @@ jb = pygame.image.load('Imagens pygame/jb_n_e.png').convert_alpha()
 
 bala = pygame.image.load('Imagens pygame/bala.png').convert_alpha()
 
+bala = pygame.transform.scale(bala, (50, 50))
+
 cr7 = pygame.transform.scale(cr7, (75, 75))
 
 Fd = pygame.transform.scale(Fd, (comprimento, altura))
@@ -86,6 +88,8 @@ jb_victory = pygame.image.load('Imagens pygame/james-bond.png').convert_alpha()
 jb_victory = pygame.transform.scale(jb_victory, (comprimento, altura))
 
 jump = pygame.mixer.Sound('Som pygame/smw_jump.wav')
+
+
 
  
 
@@ -281,6 +285,10 @@ class JB(pygame.sprite.Sprite):
 
         self.desatirou = 0
 
+        self.podeatirar = True
+
+        self.semtiro = 0
+
         self.health = 100
 
         self.direction = 'esquerda'
@@ -385,6 +393,11 @@ class JB(pygame.sprite.Sprite):
 
             self.desatirou = agora
 
+        agora = pygame.time.get_ticks()
+        if agora - self.semtiro >= 1500:
+            self.podeatirar = True
+            self.semtiro = agora
+
     def receber_dano(self, dano):
 
         self.health -= dano
@@ -395,6 +408,7 @@ def teladeinicio():
  
 
     instructions_font = pygame.font.Font (None, 32 )
+    instructions_font2 = pygame.font.Font(None, 16)
 
  
 
@@ -402,6 +416,11 @@ def teladeinicio():
 
     pygame.mixer.music.play(-1)
     instructions_text = instructions_font.render("Click para iniciar", True, (255, 255, 255))
+    p1= instructions_font2.render("Cristiano Ronaldo (P1)", True, (255, 255, 255))
+    p1controls = instructions_font2.render("Setas: Andar; O: Socar; P: Chutar.", True, (255, 255, 255))
+    p2 = instructions_font2.render("James Bond (P2)", True, (255, 255, 255))
+    p2controls = instructions_font2.render("WASD: Andar; Q: Atirar; E: Chutar.", True, (255, 255, 255))
+
 
  
 
@@ -412,6 +431,21 @@ def teladeinicio():
     window.blit(fighter, (comprimento // 2 - fighter.get_width() // 2, altura // 2 ))
 
     window.blit(instructions_text, (comprimento // 2 - instructions_text.get_width() // 2, altura // 2 + 200 ))
+
+    window.blit(p1, (comprimento // 5 - p1.get_width() // 2, altura - 100))
+
+    window.blit(p1controls, (comprimento // 5 - p1.get_width() // 2, altura - 80))
+
+    window.blit(p2, (550, altura - 100))
+
+    window.blit(p2controls, (550, altura - 80))
+
+
+    
+    
+
+    
+
 
     pygame.display.update()
 
@@ -442,9 +476,13 @@ def vitoriacr7():
 
     instructions_font = pygame.font.Font (None, 32 )
 
-    pygame.mixer.music.load('Som pygame/CR7WINS.mp3')
+    musica = pygame.mixer.music.load('Som pygame/CR7WINS.mp3')
 
-    pygame.mixer.music.play(-1)
+    musica = pygame.mixer.music.set_volume(0.3)
+
+    
+
+    musica.play(-1)
 
     instructions_text = instructions_font.render("CRISTIANO RONALDO WINS!!", True, (255, 255, 255))
 
@@ -562,13 +600,17 @@ game = True
 
 shaokahn.play()
 
+pygame.mixer.music.load('Som pygame/bgm.wav')
+
+pygame.mixer.music.play(-1)
+
  
 
 #ajustes
 
 clock = pygame.time.Clock()
 
-FPS = 30
+FPS = 60
 
  
 
@@ -714,16 +756,19 @@ while game:
 
                 jogador_atacante = lutador2
             if event.key == pygame.K_q:
+                if lutador2.podeatirar:
 
-                lutador2.atirou = True
+                    lutador2.atirou = True
 
-                lutador2.image = shot
+                    lutador2.image = shot
 
-                lutador2.atirar()
+                    lutador2.atirar()
 
-                bang.play()
+                    bang.play()
 
-                jogador_atacante = lutador2
+                    jogador_atacante = lutador2
+
+                    lutador2.podeatirar = False
                 
             
         # Verifica se soltou alguma tecla.
@@ -758,8 +803,8 @@ while game:
         elif pygame.sprite.spritecollide(lutador1, grupo_tiros, True):
             
             # Se houver colisão entre lutador1 e algum tiro no grupo_tiros
-            lutador1.receber_dano(7)
-            vida_cr7 -= 7
+            lutador1.receber_dano(10)
+            vida_cr7 -= 10
 
         if vida_jb <= 0 or vida_cr7 <= 0:
             game = False
@@ -788,12 +833,16 @@ while game:
 
 if vida_cr7 <= 0:
 
+    pygame.mixer.music.stop()
+
     vitoriajb()
     
     
     
 
 if vida_jb <= 0:
+
+    pygame.mixer.music.stop()
 
     vitoriacr7()
     
