@@ -435,31 +435,89 @@ def teladeinicio():
 
                 waiting = False
                 pygame.mixer.music.stop()
+                
 
 
 def vitoriacr7():
 
     instructions_font = pygame.font.Font (None, 32 )
 
-    instructions_text = instructions_font.render("VITORIA CR7", True, (255, 255, 255))
+    pygame.mixer.music.load('Som pygame/CR7WINS.mp3')
+
+    pygame.mixer.music.play(-1)
+
+    instructions_text = instructions_font.render("CRISTIANO RONALDO WINS!!", True, (255, 255, 255))
+
 
     window.blit(cr7_victory, (0,0))
 
     window.blit(instructions_text, (comprimento // 2 - instructions_text.get_width() // 2, altura // 2 + 200 ))
 
+    
+
     pygame.display.update()
 
+
+    standby = True
+
+    while standby:
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+
+                pygame.quit()
+
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+
+                standby = False
+
+                pygame.mixer.music.stop()
+
+                
+
+                
+
+                
+
 def vitoriajb():
+    
 
     instructions_font = pygame.font.Font (None, 32 )
 
-    instructions_text = instructions_font.render("VITORIA JB", True, (255, 255, 255))
+    pygame.mixer.music.load('Som pygame/JBWINS.mp3')
+
+    pygame.mixer.music.play(-1)
+
+    instructions_text = instructions_font.render("JAMES BOND WINS!!!", True, (255, 255, 255))
 
     window.blit(jb_victory, (0,0))
 
     window.blit(instructions_text, (comprimento // 2 - instructions_text.get_width() // 2, altura // 2 + 200 ))
 
     pygame.display.update()
+
+    standby = True
+
+    while standby:
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+
+                pygame.quit()
+
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+
+                standby = False
+
+                pygame.mixer.music.stop()
+
+                
  
 
 def healthbars(window, x, y, comprimento, altura, health):
@@ -731,9 +789,15 @@ while game:
 if vida_cr7 <= 0:
 
     vitoriajb()
+    
+    
+    
 
 if vida_jb <= 0:
 
     vitoriacr7()
+    
+    
+    
 
 pygame.quit()
