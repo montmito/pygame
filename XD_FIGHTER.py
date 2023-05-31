@@ -476,13 +476,13 @@ def vitoriacr7():
 
     instructions_font = pygame.font.Font (None, 32 )
 
-    musica = pygame.mixer.music.load('Som pygame/CR7WINS.mp3')
-
-    musica = pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.load('Som pygame/CR7WINS.mp3')
 
     
 
-    musica.play(-1)
+    
+
+    pygame.mixer.music.play(-1)
 
     instructions_text = instructions_font.render("CRISTIANO RONALDO WINS!!", True, (255, 255, 255))
 
