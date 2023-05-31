@@ -671,6 +671,8 @@ while game:
 
                 jogador_atacante = lutador1
 
+                
+
             if event.key == pygame.K_w:
 
  
@@ -743,25 +745,19 @@ while game:
                 lutador2.speedx -= 15
 
         if pygame.sprite.collide_rect(lutador1, lutador2):
-
             if jogador_atacante == lutador2:
-
                 lutador1.receber_dano(1)  # Jogador 1 acertou o Jogador 2
-
                 vida_cr7 -= 1
-
             if jogador_atacante == lutador1:
-
                 lutador2.receber_dano(3)   # Jogador 2 acertou o Jogador 1
-
                 vida_jb -= 3
-
-        # if pygame.sprite.collide_rect(lutador1, all_tiro):
-
-        #     lutador2.receber_dano(7)
+        elif pygame.sprite.spritecollide(lutador1, grupo_tiros, True):
+            
+            # Se houver colisão entre lutador1 e algum tiro no grupo_tiros
+            lutador1.receber_dano(7)
+            vida_cr7 -= 7
 
         if vida_jb <= 0 or vida_cr7 <= 0:
-
             game = False
 
     window.blit(Fd,(0,0))
