@@ -403,7 +403,7 @@ class JB(pygame.sprite.Sprite):
         self.health -= dano
 
 
-def teladeinicio():
+def teladeinicio(): #gera o texto e as imagens do inicio
 
  
 
@@ -453,7 +453,7 @@ def teladeinicio():
 
     waiting = True
 
-    while waiting:
+    while waiting: #se clicar para a música e começa o jogo
 
  
 
@@ -472,7 +472,7 @@ def teladeinicio():
                 
 
 
-def vitoriacr7():
+def vitoriacr7(): #se Cristiano ganhar
 
     instructions_font = pygame.font.Font (None, 32 )
 
@@ -512,7 +512,7 @@ def vitoriacr7():
 
                 standby = False
 
-                pygame.mixer.music.stop()
+                pygame.mixer.music.stop() 
 
                 
 
@@ -520,7 +520,7 @@ def vitoriacr7():
 
                 
 
-def vitoriajb():
+def vitoriajb(): #se Bond ganhar
     
 
     instructions_font = pygame.font.Font (None, 32 )
@@ -568,25 +568,25 @@ def healthbars(window, x, y, comprimento, altura, health):
 
  
 
-    # Draw the border of the health bar
+    # Desenha a barra de life
 
     pygame.draw.rect(window, BORDER_COLOR, (x, y, comprimento, altura), BORDER_WIDTH)
 
  
 
-    # Calculate the width of the health bar based on the health value
+    # Calcula o comprimento da barra baseado no valor de life atual
 
     health_width = (health / 100) * (comprimento - 2 * BORDER_WIDTH)
 
  
 
-    # Draw the current health level
+    # Desenhar o retângulo do life atual
 
     pygame.draw.rect(window, HEALTH_COLOR, (x + BORDER_WIDTH, y + BORDER_WIDTH, health_width, altura - 2 * BORDER_WIDTH))
 
  
 
-    # Set the font and size for the text
+    # Fonte e tamanho do texto
 
     font = pygame.font.Font(None, 24)
 
@@ -803,8 +803,8 @@ while game:
         elif pygame.sprite.spritecollide(lutador1, grupo_tiros, True):
             
             # Se houver colisão entre lutador1 e algum tiro no grupo_tiros
-            lutador1.receber_dano(10)
-            vida_cr7 -= 10
+            lutador1.receber_dano(20)
+            vida_cr7 -= 20
 
         if vida_jb <= 0 or vida_cr7 <= 0:
             game = False
